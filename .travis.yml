@@ -1,0 +1,17 @@
+sudo: required
+dist: trusty
+language: cpp
+cache: apt
+
+env:
+  - QT=qt56
+
+before_install:
+ - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+ - sudo apt-get update -qq -y
+ - sudo apt-get install qtbase5-dev qtdeclarative5-dev libsqlite3-dev -y
+ - sudo apt-get install qt5-default qttools5-dev-tools -y
+
+script:
+ - qmake
+ - make
