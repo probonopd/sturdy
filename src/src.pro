@@ -11,9 +11,8 @@ SOURCES += \
 
 include(core/core.pri)
 
-# Resources
-#
-#
+RESOURCES += \
+    resources/sturdy.qrc
 
 DESTDIR = $$BUILD_ROOT/bin
 
