@@ -10,6 +10,7 @@ SOURCES += \
     main.cpp
 
 include(core/core.pri)
+include(ui/ui.pri)
 
 RESOURCES += \
     resources/sturdy.qrc
