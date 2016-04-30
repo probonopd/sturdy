@@ -26,6 +26,8 @@
 #include <QSettings>
 #include <QDebug>
 
+using namespace Core;
+
 ProfileManager::ProfileManager()
     : m_databaseConnected(false)
 {

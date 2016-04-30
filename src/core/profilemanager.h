@@ -23,6 +23,8 @@
 
 #include <QString>
 
+namespace Core
+{
 class ProfileManager
 {
 public:
@@ -48,6 +50,7 @@ private:
     bool m_databaseConnected;
 
     QString m_currentProfile;
+};
 };
 
 #endif // PROFILEMANAGER_H
