@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/data">
-        <file>data/sturdydata.db</file>
+        <file>profiles.ini</file>
+        <file>data.db</file>
     </qresource>
 </RCC>
