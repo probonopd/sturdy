@@ -18,16 +18,18 @@
 **
 ***********************************************************************/
 
-#include "core/application.h"
+#include "application.h"
+#include "profilemanager.h"
 
-#include <QApplication>
+using namespace Core;
 
-int main(int argc, char* argv[]) {
-    QCoreApplication::setApplicationName(QStringLiteral("Sturdy"));
-    QCoreApplication::setApplicationVersion(STURDY_VERSION);
+Application::Application(QObject* parent)
+    : QObject(parent)
+{
+    m_profileManager = new ProfileManager();
+}
 
-    QScopedPointer<Core::Application> qapp(new Core::Application);
-
-
-    return 0;
+Application::~Application()
+{
+    delete m_profileManager;
 }

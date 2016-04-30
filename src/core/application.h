@@ -18,16 +18,28 @@
 **
 ***********************************************************************/
 
-#include "core/application.h"
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
-#include <QApplication>
+#include <QObject>
 
-int main(int argc, char* argv[]) {
-    QCoreApplication::setApplicationName(QStringLiteral("Sturdy"));
-    QCoreApplication::setApplicationVersion(STURDY_VERSION);
+namespace Core
+{
 
-    QScopedPointer<Core::Application> qapp(new Core::Application);
+class ProfileManager;
 
+class Application : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Application(QObject* parent = nullptr);
+    ~Application();
 
-    return 0;
+private:
+    ProfileManager* m_profileManager;
+};
+
 }
+
+
+#endif // APPLICATION_H
