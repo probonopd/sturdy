@@ -30,7 +30,7 @@ class ProfileManager
 public:
     explicit ProfileManager();
 
-    void initConfigDir();
+    void initDataDir();
     bool initProfile(const QString& profileName);
 
     // Return 0: success, -1: already exists, -2: can't create dir

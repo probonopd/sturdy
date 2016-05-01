@@ -30,7 +30,7 @@ AuthorizationDialog::AuthorizationDialog(Core::ProfileManager* mgr, QWidget* par
     , ui(new Ui::AuthorizationDialog)
     , m_manager(mgr)
 {
-    m_manager->initConfigDir();
+    m_manager->initDataDir();
 
     ui->setupUi(this);
     ui->cmbProfiles->addItems(m_manager->availableProfiles());

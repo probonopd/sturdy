@@ -34,9 +34,9 @@ ProfileManager::ProfileManager()
 
 }
 
-void ProfileManager::initConfigDir()
+void ProfileManager::initDataDir()
 {
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
 
     if (dir.exists() && QFile(dir.filePath(QLatin1String("profiles/profiles.ini"))).exists()) {
         return;
@@ -59,7 +59,7 @@ bool ProfileManager::initProfile(const QString& profileName)
 {
     Q_ASSERT(!profileName.isEmpty());
 
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QLatin1String("/profiles/") + profileName);
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/") + profileName);
     if (!dir.exists()) {
         qWarning() << "Profile doesn't exist";
         return false;
@@ -73,7 +73,7 @@ bool ProfileManager::initProfile(const QString& profileName)
 
 int ProfileManager::createProfile(const QString& profileName)
 {
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QLatin1String("/profiles"));
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles"));
 
     if (QDir(dir.absolutePath() + QLatin1Char('/') + profileName).exists()) {
         qWarning("Profile dir exists");
@@ -93,7 +93,7 @@ int ProfileManager::createProfile(const QString& profileName)
 
 bool ProfileManager::removeProfile(const QString& profileName)
 {
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QLatin1String("/profiles/") + profileName);
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/") + profileName);
 
     if (!dir.exists()) {
         return false;
@@ -111,32 +111,32 @@ QString ProfileManager::currentProfile()
 
 QString ProfileManager::startingProfile()
 {
-    QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QLatin1String("/profiles/profiles.ini"));
+    QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/profiles.ini"));
     return settings.value("Profiles/startProfile").toString();
 }
 
 bool ProfileManager::setStartingProfile(const QString& profileName)
 {
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QLatin1String("/profiles/") + profileName);
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/") + profileName);
     if (!dir.exists()) {
         qWarning() << "Profile doesn't exist";
         return false;
     }
 
-    QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QLatin1String("/profiles/profiles.ini"));
+    QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/profiles.ini"));
     settings.setValue("Profiles/startProfile", profileName);
     return true;
 }
 
 QStringList ProfileManager::availableProfiles()
 {
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QLatin1String("/profiles"));
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles"));
     return dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 }
 
 void ProfileManager::connectToDatabase(const QString& profileName)
 {
-    const QString dbFile = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)
+    const QString dbFile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
             + QLatin1String("/profiles/") + profileName + QLatin1String("/data.db");
 
     // Reconnect
