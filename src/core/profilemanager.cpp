@@ -83,7 +83,6 @@ int ProfileManager::createProfile(const QString& profileName)
         qWarning("Cant' create profile dir");
         return -2;
     }
-    /* Do some cool stuff with json here in future */
 
     dir.cd(profileName);
     QFile(QLatin1String(":/data/data.db")).copy(dir.filePath(QLatin1String("data.db")));
