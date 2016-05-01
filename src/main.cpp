@@ -21,13 +21,16 @@
 #include "core/application.h"
 
 #include <QApplication>
+#include <QTimer>
 
 int main(int argc, char* argv[]) {
     QCoreApplication::setApplicationName(QStringLiteral("Sturdy"));
     QCoreApplication::setApplicationVersion(STURDY_VERSION);
 
-    QScopedPointer<Core::Application> qapp(new Core::Application);
+    QScopedPointer<QApplication> qapp(new QApplication(argc, argv));
+    QScopedPointer<Core::Application> app(new Core::Application);
 
+    QTimer::singleShot(0, app.data(), SLOT(run()));
 
-    return 0;
+    return qapp->exec();
 }
