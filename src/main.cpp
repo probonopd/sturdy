@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
     QScopedPointer<QApplication> qapp(new QApplication(argc, argv));
     QScopedPointer<Core::Application> app(new Core::Application);
 
-    QTimer::singleShot(0, app.take(), SLOT(run()));
+    QTimer::singleShot(0, app.data(), SLOT(run()));
 
     return qapp->exec();
 }
