@@ -20,6 +20,7 @@
 
 #include "application.h"
 #include "profilemanager.h"
+#include "ui/authorizationdialog.h"
 
 using namespace Core;
 
@@ -32,4 +33,26 @@ Application::Application(QObject* parent)
 Application::~Application()
 {
     delete m_profileManager;
+}
+
+void Application::switchProfile()
+{
+    if (!m_profileManager->startingProfile().isEmpty())
+    {
+        // launch mainwindow
+        return;
+    }
+
+    AuthorizationDialog* dialog = new AuthorizationDialog(m_profileManager);
+
+    if (dialog->exec()) {
+        // launch mainwindow
+    }
+
+    dialog->deleteLater();
+}
+
+void Application::run()
+{
+    switchProfile();
 }

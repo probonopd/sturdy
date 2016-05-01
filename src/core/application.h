@@ -35,6 +35,11 @@ public:
     explicit Application(QObject* parent = nullptr);
     ~Application();
 
+    void switchProfile();
+
+public slots:
+    void run();
+
 private:
     ProfileManager* m_profileManager;
 };
