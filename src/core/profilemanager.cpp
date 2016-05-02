@@ -71,6 +71,17 @@ bool ProfileManager::initProfile(const QString& profileName)
     return m_databaseConnected;
 }
 
+void ProfileManager::reset()
+{
+    m_currentProfile = QString();
+    m_databaseConnected = false;
+
+    QSqlDatabase db = QSqlDatabase::database();
+    if (db.isOpen())
+        db.close();
+    QSqlDatabase::removeDatabase(db.connectionName());
+}
+
 int ProfileManager::createProfile(const QString& profileName)
 {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles"));
