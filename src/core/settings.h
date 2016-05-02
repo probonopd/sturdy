@@ -18,20 +18,47 @@
 **
 ***********************************************************************/
 
-#include "core/application.h"
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-#include <QApplication>
-#include <QTimer>
+#include <QObject>
 
-int main(int argc, char* argv[]) {
-    QCoreApplication::setOrganizationName(QStringLiteral("Sturdy"));
-    QCoreApplication::setApplicationName(QStringLiteral("Sturdy"));
-    QCoreApplication::setApplicationVersion(STURDY_VERSION);
+class QSettings;
 
-    QScopedPointer<QApplication> qapp(new QApplication(argc, argv));
-    QScopedPointer<Core::Application> app(new Core::Application);
+namespace Core
+{
 
-    QTimer::singleShot(0, app.data(), SLOT(run()));
+class Settings : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Settings(QObject* parent = nullptr);
+    ~Settings();
 
-    return qapp->exec();
+    // Settings groups
+    // - State
+    QByteArray windowGeometry;
+    QByteArray verticalSplitterGeometry;
+
+    // - Display options
+    bool showOpenEntries;
+    bool showTags;
+
+    // - Synchronization options
+    bool autoSave;
+    uint autoSaveInterval;
+
+public slots:
+    void load();
+    void save();
+
+signals:
+    void updated();
+
+private:
+    QSettings* m_settings;
+};
+
 }
+
+#endif // SETTINGS_H

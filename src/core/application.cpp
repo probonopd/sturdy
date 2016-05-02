@@ -19,6 +19,7 @@
 ***********************************************************************/
 
 #include "application.h"
+#include "settings.h"
 #include "profilemanager.h"
 #include "ui/authorizationdialog.h"
 
@@ -27,6 +28,7 @@ using namespace Core;
 Application::Application(QObject* parent)
     : QObject(parent)
 {
+    m_settings = new Settings(this);
     m_profileManager = new ProfileManager();
 }
 

@@ -26,6 +26,7 @@
 namespace Core
 {
 
+class Settings;
 class ProfileManager;
 
 class Application : public QObject
@@ -41,6 +42,7 @@ public slots:
     void run();
 
 private:
+    Settings* m_settings;
     ProfileManager* m_profileManager;
 };
 
