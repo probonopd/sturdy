@@ -25,6 +25,7 @@
 
 namespace Core
 {
+
 class ProfileManager
 {
 public:
@@ -32,11 +33,11 @@ public:
 
     void initDataDir();
     bool initProfile(const QString& profileName);
+    void resetProfile();
 
     // Return 0: success, -1: already exists, -2: can't create dir
     int createProfile(const QString& profileName);
     bool removeProfile(const QString& profileName);
-    void reset();
 
     QString currentProfile();
     QString startingProfile();
@@ -52,6 +53,7 @@ private:
 
     QString m_currentProfile;
 };
+
 };
 
 #endif // PROFILEMANAGER_H

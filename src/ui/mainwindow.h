@@ -18,39 +18,41 @@
 **
 ***********************************************************************/
 
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include <QObject>
-
-class MainWindow;
+#include <QMainWindow>
 
 namespace Core
 {
-
+class Application;
 class Settings;
 class ProfileManager;
-
-class Application : public QObject
-{
-    Q_OBJECT
-public:
-    explicit Application(QObject* parent = nullptr);
-    ~Application();
-
-    Settings* settings() const;
-    ProfileManager *profileManager() const;
-
-public slots:
-    void run();
-
-private:
-    Settings* m_settings;
-    ProfileManager* m_profileManager;
-
-    QScopedPointer<MainWindow> m_mainwindow;
-};
-
 }
 
-#endif // APPLICATION_H
+namespace Ui {
+class MainWindow;
+}
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(Core::Application* app, QWidget* parent = nullptr);
+    ~MainWindow();
+
+private slots:
+    void updateSwitchProfileMenu();
+
+private:
+    void requestProfileChange(QString profile);
+
+    Ui::MainWindow *ui;
+
+    Core::Application* m_application;
+    Core::Settings* m_settings;
+    Core::ProfileManager* m_profileManager;
+};
+
+#endif // MAINWINDOW_H

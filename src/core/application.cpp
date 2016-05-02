@@ -22,6 +22,7 @@
 #include "settings.h"
 #include "profilemanager.h"
 #include "ui/authorizationdialog.h"
+#include "ui/mainwindow.h"
 
 using namespace Core;
 
@@ -37,24 +38,31 @@ Application::~Application()
     delete m_profileManager;
 }
 
-void Application::switchProfile()
+void Application::run()
 {
     if (!m_profileManager->startingProfile().isEmpty())
     {
-        // launch mainwindow
+        m_mainwindow.reset(new MainWindow(this));
+        m_mainwindow->show();
         return;
     }
 
     AuthorizationDialog* dialog = new AuthorizationDialog(m_profileManager);
 
     if (dialog->exec()) {
-        // launch mainwindow
+        m_mainwindow.reset(new MainWindow(this));
+        m_mainwindow->show();
     }
 
     dialog->deleteLater();
 }
 
-void Application::run()
+Settings* Application::settings() const
 {
-    switchProfile();
+    return m_settings;
+}
+
+ProfileManager *Application::profileManager() const
+{
+    return m_profileManager;
 }

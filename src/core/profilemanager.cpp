@@ -71,15 +71,13 @@ bool ProfileManager::initProfile(const QString& profileName)
     return m_databaseConnected;
 }
 
-void ProfileManager::reset()
+void ProfileManager::resetProfile()
 {
     m_currentProfile = QString();
     m_databaseConnected = false;
 
-    QSqlDatabase db = QSqlDatabase::database();
-    if (db.isOpen())
-        db.close();
-    QSqlDatabase::removeDatabase(db.connectionName());
+    const QString connection = QSqlDatabase::database().connectionName();
+    QSqlDatabase().removeDatabase(connection);
 }
 
 int ProfileManager::createProfile(const QString& profileName)

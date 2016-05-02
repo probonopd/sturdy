@@ -35,6 +35,9 @@ AuthorizationDialog::AuthorizationDialog(Core::ProfileManager* mgr, QWidget* par
     ui->setupUi(this);
     ui->cmbProfiles->addItems(m_manager->availableProfiles());
 
+    if (m_manager->availableProfiles().isEmpty())
+        ui->tabWidget->setCurrentIndex(1);
+
     connect(ui->logInBtn, &QPushButton::pressed, this, &AuthorizationDialog::logIn);
     connect(ui->signUpBtn, &QPushButton::pressed, this, &AuthorizationDialog::signUp);
 }
