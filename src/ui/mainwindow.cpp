@@ -82,9 +82,7 @@ void MainWindow::updateSwitchProfileMenu()
     QMenu* menu = ui->menuSwitchProfile;
 
     // clear old actions
-    for (auto action : menu->actions()) {
-        menu->removeAction(action);
-    }
+    qDeleteAll(menu->actions());
 
     QStringList availableProfiles = m_profileManager->availableProfiles();
     QString currentProfile = m_profileManager->currentProfile();
