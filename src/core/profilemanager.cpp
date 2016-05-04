@@ -19,6 +19,7 @@
 ***********************************************************************/
 
 #include "profilemanager.h"
+#include "settings.h"
 
 #include <QDir>
 #include <QSqlQuery>
@@ -28,8 +29,9 @@
 
 using namespace Core;
 
-ProfileManager::ProfileManager()
+ProfileManager::ProfileManager(Settings* settings)
     : m_databaseConnected(false)
+    , m_settings(settings)
 {
 
 }
@@ -37,38 +39,32 @@ ProfileManager::ProfileManager()
 void ProfileManager::initDataDir()
 {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-
-    if (dir.exists() && QFile(dir.filePath(QLatin1String("profiles/profiles.ini"))).exists()) {
+    if (dir.exists()) {
         return;
     }
 
-    if (!dir.exists()) {
-        dir.mkpath(dir.absolutePath());
-    }
-
-    // Create empty profiles directory
+    dir.mkpath(dir.absolutePath());
     dir.mkdir(QLatin1String("profiles"));
-    dir.cd(QLatin1String("profiles"));
-
-    QFile(dir.filePath(QLatin1String("profiles.ini"))).remove();
-    QFile(QLatin1String(":/data/profiles.ini")).copy(dir.filePath(QLatin1String("profiles.ini")));
-    QFile(dir.filePath(QLatin1String("profiles.ini"))).setPermissions(QFile::ReadUser | QFile::WriteUser);
 }
 
 bool ProfileManager::initProfile(const QString& profileName)
 {
     Q_ASSERT(!profileName.isEmpty());
 
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/") + profileName);
-    if (!dir.exists()) {
-        qWarning() << "Profile doesn't exist";
-        return false;
-    }
+    if (!checkProfileData(profileName))
+        createProfile(profileName);
 
     m_currentProfile = profileName;
     connectToDatabase(profileName);
+    setStartingProfile(profileName);
 
     return m_databaseConnected;
+}
+
+bool ProfileManager::checkProfileData(const QString& profileName) const
+{
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/") + profileName);
+    return (dir.exists() && QFile(dir.filePath(profileName)).exists());
 }
 
 void ProfileManager::resetProfile()
@@ -84,13 +80,9 @@ int ProfileManager::createProfile(const QString& profileName)
 {
     QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles"));
 
-    if (QDir(dir.absolutePath() + QLatin1Char('/') + profileName).exists()) {
-        qWarning("Profile dir exists");
-        return -1;
-    }
-    if (!dir.mkdir(profileName)) {
+    if (!dir.mkpath(profileName)) {
         qWarning("Cant' create profile dir");
-        return -2;
+        return -1;
     }
 
     dir.cd(profileName);
@@ -98,6 +90,15 @@ int ProfileManager::createProfile(const QString& profileName)
     QFile(dir.filePath(QLatin1String("data.db"))).setPermissions(QFile::ReadUser | QFile::WriteUser);
 
     return 0;
+}
+
+QString ProfileManager::defaultProfile()
+{
+#ifdef Q_OS_WIN32
+    return qgetenv("USERNAME");
+#else
+    return qgetenv("USER");
+#endif
 }
 
 bool ProfileManager::removeProfile(const QString& profileName)
@@ -120,8 +121,7 @@ QString ProfileManager::currentProfile()
 
 QString ProfileManager::startingProfile()
 {
-    QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/profiles.ini"));
-    return settings.value("Profiles/startProfile").toString();
+    return m_settings->startingProfile;
 }
 
 bool ProfileManager::setStartingProfile(const QString& profileName)
@@ -132,8 +132,8 @@ bool ProfileManager::setStartingProfile(const QString& profileName)
         return false;
     }
 
-    QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/profiles/profiles.ini"));
-    settings.setValue("Profiles/startProfile", profileName);
+    m_settings->startingProfile = profileName;
+
     return true;
 }
 

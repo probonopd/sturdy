@@ -21,10 +21,12 @@
 #include "settings.h"
 
 #include <QSettings>
+#include <QCoreApplication>
 
 namespace
 {
 // Configuration groups
+const char GroupStart[] = "start";
 const char GroupState[] = "state";
 const char GroupDisplay[] = "display";
 const char GroupSync[] = "sync";
@@ -36,6 +38,12 @@ Settings::Settings(QObject* parent)
     : QObject(parent)
     , m_settings(new QSettings(this))
 {
+    m_ini = new QSettings(QSettings::IniFormat,
+                          QSettings::UserScope,
+                          QCoreApplication::organizationName(),
+                          QCoreApplication::applicationName());
+    m_ini->setIniCodec("UTF-8");
+
     load();
 }
 
@@ -46,6 +54,10 @@ Settings::~Settings()
 
 void Settings::load()
 {
+    m_ini->beginGroup(GroupStart);
+    startingProfile = m_ini->value(QStringLiteral("startingProfile"), QString()).toString();
+    m_ini->endGroup();
+
     m_settings->beginGroup(GroupState);
     windowGeometry = m_settings->value(QStringLiteral("windowGeometry")).toByteArray();
     verticalSplitterGeometry = m_settings->value(QStringLiteral("verticalSplitterGeometry")).toByteArray();
@@ -64,6 +76,10 @@ void Settings::load()
 
 void Settings::save()
 {
+    m_ini->beginGroup(GroupStart);
+    m_ini->setValue(QStringLiteral("startingProfile"), startingProfile);
+    m_ini->endGroup();
+
     m_settings->beginGroup(GroupState);
     m_settings->setValue(QStringLiteral("windowGeometry"), windowGeometry);
     m_settings->setValue(QStringLiteral("verticalSplitterGeometry"), verticalSplitterGeometry);
@@ -80,6 +96,7 @@ void Settings::save()
     m_settings->endGroup();
 
     m_settings->sync();
+    m_ini->sync();
 
     emit updated();
 }

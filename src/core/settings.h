@@ -36,6 +36,9 @@ public:
     ~Settings();
 
     // Settings groups
+    // -Start
+    QString startingProfile;
+
     // - State
     QByteArray windowGeometry;
     QByteArray verticalSplitterGeometry;
@@ -57,6 +60,7 @@ signals:
 
 private:
     QSettings* m_settings;
+    QSettings* m_ini;
 };
 
 }

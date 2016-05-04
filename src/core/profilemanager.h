@@ -26,12 +26,14 @@
 namespace Core
 {
 
+class Settings;
 class ProfileManager
 {
 public:
-    explicit ProfileManager();
+    explicit ProfileManager(Settings* settings);
 
     void initDataDir();
+    bool checkProfileData(const QString& profileName) const;
     bool initProfile(const QString& profileName);
     void resetProfile();
 
@@ -40,6 +42,7 @@ public:
     bool removeProfile(const QString& profileName);
 
     QString currentProfile();
+    QString defaultProfile();
     QString startingProfile();
     bool setStartingProfile(const QString& profileName);
 
@@ -52,6 +55,8 @@ private:
     bool m_databaseConnected;
 
     QString m_currentProfile;
+
+    Settings* m_settings;
 };
 
 };

@@ -21,7 +21,6 @@
 #include "application.h"
 #include "settings.h"
 #include "profilemanager.h"
-#include "ui/authorizationdialog.h"
 #include "ui/mainwindow.h"
 
 using namespace Core;
@@ -30,7 +29,7 @@ Application::Application(QObject* parent)
     : QObject(parent)
 {
     m_settings = new Settings(this);
-    m_profileManager = new ProfileManager();
+    m_profileManager = new ProfileManager(m_settings);
 }
 
 Application::~Application()
@@ -40,21 +39,16 @@ Application::~Application()
 
 void Application::run()
 {
-    if (!m_profileManager->startingProfile().isEmpty())
-    {
-        m_mainwindow.reset(new MainWindow(this));
-        m_mainwindow->show();
-        return;
-    }
+    m_profileManager->initDataDir();
 
-    AuthorizationDialog* dialog = new AuthorizationDialog(m_profileManager);
+    QString profile = m_profileManager->startingProfile();
+    if (profile.isEmpty())
+        profile = m_profileManager->defaultProfile();
 
-    if (dialog->exec()) {
-        m_mainwindow.reset(new MainWindow(this));
-        m_mainwindow->show();
-    }
+    m_profileManager->initProfile(profile);
 
-    dialog->deleteLater();
+    m_mainwindow.reset(new MainWindow(this));
+    m_mainwindow->show();
 }
 
 Settings* Application::settings() const
