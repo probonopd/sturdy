@@ -107,6 +107,7 @@ void MainWindow::requestProfileChange(const QString& profile)
                                   QMessageBox::Yes | QMessageBox::Cancel);
 
     if (reply == QMessageBox::Yes) {
+        m_profileManager->closeProfile();
         loadProfile(profile);
         updateSwitchProfileMenu();
     }
@@ -114,6 +115,5 @@ void MainWindow::requestProfileChange(const QString& profile)
 
 void MainWindow::loadProfile(const QString& profile)
 {
-    m_profileManager->closeProfile();
     m_profileManager->initProfile(profile);
 }
