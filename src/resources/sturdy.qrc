@@ -3,4 +3,9 @@
         <file>profiles.ini</file>
         <file>data.db</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file>icons/remove_black_18dp.png</file>
+        <file>icons/edit_black_18dp.png</file>
+        <file>icons/add_black_18dp.png</file>
+    </qresource>
 </RCC>
