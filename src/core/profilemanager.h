@@ -37,7 +37,7 @@ public:
     bool initProfile(const QString& profileName);
     void resetProfile();
 
-    // Return 0: success, -1: already exists, -2: can't create dir
+    // Return 0: success, -1: can't create dir
     int createProfile(const QString& profileName);
     bool removeProfile(const QString& profileName);
 
