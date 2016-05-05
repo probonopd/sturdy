@@ -35,7 +35,7 @@ public:
     void initDataDir();
     bool checkProfileData(const QString& profileName) const;
     bool initProfile(const QString& profileName);
-    void resetProfile();
+    void closeProfile();
 
     // Return 0: success, -1: can't create dir
     int createProfile(const QString& profileName);

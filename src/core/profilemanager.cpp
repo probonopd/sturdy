@@ -67,7 +67,7 @@ bool ProfileManager::checkProfileData(const QString& profileName) const
     return (dir.exists() && QFile(dir.filePath(profileName)).exists());
 }
 
-void ProfileManager::resetProfile()
+void ProfileManager::closeProfile()
 {
     m_currentProfile = QString();
     m_databaseConnected = false;

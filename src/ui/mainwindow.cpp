@@ -98,7 +98,7 @@ void MainWindow::updateSwitchProfileMenu()
     }
 }
 
-void MainWindow::requestProfileChange(QString profile)
+void MainWindow::requestProfileChange(const QString& profile)
 {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(0,
@@ -107,9 +107,13 @@ void MainWindow::requestProfileChange(QString profile)
                                   QMessageBox::Yes | QMessageBox::Cancel);
 
     if (reply == QMessageBox::Yes) {
-        m_profileManager->resetProfile();
-        m_profileManager->initProfile(profile);
-
+        loadProfile(profile);
         updateSwitchProfileMenu();
     }
+}
+
+void MainWindow::loadProfile(const QString& profile)
+{
+    m_profileManager->closeProfile();
+    m_profileManager->initProfile(profile);
 }

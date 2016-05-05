@@ -46,7 +46,8 @@ private slots:
     void updateSwitchProfileMenu();
 
 private:
-    void requestProfileChange(QString profile);
+    void requestProfileChange(const QString& profile);
+    void loadProfile(const QString& profile);
 
     Ui::MainWindow *ui;
 
