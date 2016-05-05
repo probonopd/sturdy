@@ -115,5 +115,12 @@ void MainWindow::requestProfileChange(const QString& profile)
 
 void MainWindow::loadProfile(const QString& profile)
 {
-    m_profileManager->initProfile(profile);
+    if (!m_profileManager->initProfile(profile)) {
+        QMessageBox::critical(0,
+                              QStringLiteral("Something went wrong"),
+                              QStringLiteral("Profile failed to load"),
+                              QMessageBox::Ok
+                              );
+        return;
+    }
 }
