@@ -23,8 +23,7 @@
 
 #include <QMainWindow>
 
-namespace Core
-{
+namespace Core {
 class Application;
 class Settings;
 class ProfileManager;
@@ -42,12 +41,14 @@ public:
     explicit MainWindow(Core::Application* app, QWidget* parent = nullptr);
     ~MainWindow();
 
+    void loadProfile(const QString& profile);
+
 private slots:
     void updateSwitchProfileMenu();
 
 private:
     void requestProfileChange(const QString& profile);
-    void loadProfile(const QString& profile);
+    void closeProfile();
 
     Ui::MainWindow *ui;
 

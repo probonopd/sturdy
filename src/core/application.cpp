@@ -45,10 +45,10 @@ void Application::run()
     if (profile.isEmpty())
         profile = m_profileManager->defaultProfile();
 
-    m_profileManager->initProfile(profile);
-
     m_mainwindow.reset(new MainWindow(this));
     m_mainwindow->show();
+
+    m_mainwindow->loadProfile(profile);
 }
 
 Settings* Application::settings() const

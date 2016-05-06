@@ -42,6 +42,8 @@ public:
     // - State
     QByteArray windowGeometry;
     QByteArray verticalSplitterGeometry;
+    QByteArray selectionSplitterGeometry;
+
 
     // - Display options
     bool showOpenEntries;

@@ -61,6 +61,7 @@ void Settings::load()
     m_settings->beginGroup(GroupState);
     windowGeometry = m_settings->value(QStringLiteral("windowGeometry")).toByteArray();
     verticalSplitterGeometry = m_settings->value(QStringLiteral("verticalSplitterGeometry")).toByteArray();
+    selectionSplitterGeometry = m_settings->value(QStringLiteral("selectionSplitterGeometry")).toByteArray();
     m_settings->endGroup();
 
     m_settings->beginGroup(GroupDisplay);
@@ -83,6 +84,7 @@ void Settings::save()
     m_settings->beginGroup(GroupState);
     m_settings->setValue(QStringLiteral("windowGeometry"), windowGeometry);
     m_settings->setValue(QStringLiteral("verticalSplitterGeometry"), verticalSplitterGeometry);
+    m_settings->setValue(QStringLiteral("selectionSplitterGeometry"), selectionSplitterGeometry);
     m_settings->endGroup();
 
     m_settings->beginGroup(GroupDisplay);

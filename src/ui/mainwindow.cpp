@@ -40,6 +40,7 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
 
     restoreGeometry(m_settings->windowGeometry);
     ui->splitter->restoreState(m_settings->verticalSplitterGeometry);
+    ui->selSplitter->restoreState(m_settings->selectionSplitterGeometry);
 
     // Menu
 
@@ -72,6 +73,7 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
 MainWindow::~MainWindow()
 {
     m_settings->verticalSplitterGeometry = ui->splitter->saveState();
+    m_settings->selectionSplitterGeometry = ui->selSplitter->saveState();
     m_settings->windowGeometry = saveGeometry();
 
     delete ui;
@@ -107,9 +109,8 @@ void MainWindow::requestProfileChange(const QString& profile)
                                   QMessageBox::Yes | QMessageBox::Cancel);
 
     if (reply == QMessageBox::Yes) {
-        m_profileManager->closeProfile();
+        closeProfile();
         loadProfile(profile);
-        updateSwitchProfileMenu();
     }
 }
 
@@ -121,6 +122,14 @@ void MainWindow::loadProfile(const QString& profile)
                               QStringLiteral("Profile failed to load"),
                               QMessageBox::Ok
                               );
+        updateSwitchProfileMenu();
         return;
     }
+
+    updateSwitchProfileMenu();
+}
+
+void MainWindow::closeProfile()
+{
+    m_profileManager->closeProfile();
 }
