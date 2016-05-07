@@ -26,27 +26,18 @@
 using namespace Mvc;
 
 NotebooksModel::NotebooksModel(QObject* parent)
-    : QAbstractListModel(parent)
-    , m_tableModel(new QSqlTableModel)
+    : QSqlTableModel(parent)
 {
-    m_tableModel->setTable(QStringLiteral("notebooks"));
-    m_tableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
-    m_tableModel->select();
-
-    connect(m_tableModel, &QSqlTableModel::rowsRemoved, [this]() {
-        qDebug() << "Data changed";
-    });
+    setTable(QStringLiteral("notebooks"));
+    setEditStrategy(QSqlTableModel::OnFieldChange);
+    select();
 }
 
-NotebooksModel::~NotebooksModel()
+int NotebooksModel::columnCount(const QModelIndex &parent) const
 {
-    delete m_tableModel;
-}
+    Q_UNUSED(parent)
 
-int NotebooksModel::rowCount(const QModelIndex &index) const
-{
-    QModelIndex i = m_tableModel->index(index.row(), Field::Id);
-    return m_tableModel->rowCount(i);
+    return 1;
 }
 
 Qt::ItemFlags NotebooksModel::flags(const QModelIndex &index) const
@@ -59,24 +50,16 @@ QVariant NotebooksModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    switch (role) {
-    case Qt::DisplayRole:
+    switch(role)
     {
-        QModelIndex idx = m_tableModel->index(index.row(), Field::Title);
-        return m_tableModel->data(idx).toString();
-    }
+    case Qt::DisplayRole:
+        return QSqlTableModel::data(createIndex(index.row(), Field::Title), role);
 
     case Qt::EditRole:
-    {
-        QModelIndex idx = m_tableModel->index(index.row(), Field::Title);
-        return m_tableModel->data(idx).toString();
-    }
+        return QSqlTableModel::data(createIndex(index.row(), Field::Title), role);
 
     case Qt::ToolTipRole:
-    {
-        QModelIndex idx = m_tableModel->index(index.row(), Field::Description);
-        return m_tableModel->data(idx).toString();
-    }
+        return QSqlTableModel::data(createIndex(index.row(), Field::Description), role).toString();
 
     default:
         return QVariant();
@@ -85,6 +68,5 @@ QVariant NotebooksModel::data(const QModelIndex &index, int role) const
 
 bool NotebooksModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    QModelIndex idx = m_tableModel->index(index.row(), Field::Title);
-    return m_tableModel->setData(idx, value, role);
+    return QSqlTableModel::setData(createIndex(index.row(), Field::Title), value, role);
 }

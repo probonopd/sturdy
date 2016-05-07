@@ -72,6 +72,13 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
     connect(ui->actionAboutQt, &QAction::triggered, [this]() {
         QMessageBox::aboutQt(this);
     });
+
+    // Notebook buttons
+
+    // - Remove button
+    connect(ui->btnRemoveNotebook, &QToolButton::pressed, [this]() {
+        m_nbModel->removeRow(ui->lstNotebooks->currentIndex().row());
+    });
 }
 
 MainWindow::~MainWindow()

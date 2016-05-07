@@ -27,14 +27,13 @@
 namespace Mvc
 {
 
-class NotebooksModel : public QAbstractListModel
+class NotebooksModel : public QSqlTableModel
 {
     Q_OBJECT
 public:
     explicit NotebooksModel(QObject* parent = nullptr);
-    ~NotebooksModel();
 
-    int rowCount(const QModelIndex& index) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
     QVariant data(const QModelIndex& index, int role) const override;
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
@@ -46,8 +45,6 @@ private:
         Description = 2,
         Count = 3
     };
-
-    QSqlTableModel* m_tableModel;
 };
 
 }
