@@ -25,6 +25,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "mvc/notebooksmodel.h"
+
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QMessageBox>
@@ -127,9 +129,13 @@ void MainWindow::loadProfile(const QString& profile)
     }
 
     updateSwitchProfileMenu();
+    m_nbModel = new Mvc::NotebooksModel;
+    ui->lstNotebooks->setModel(m_nbModel);
 }
 
 void MainWindow::closeProfile()
 {
+    if (m_nbModel)
+        delete m_nbModel;
     m_profileManager->closeProfile();
 }

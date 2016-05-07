@@ -18,49 +18,38 @@
 **
 ***********************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef NOTEBOOKSMODEL_H
+#define NOTEBOOKSMODEL_H
 
-#include <QMainWindow>
+#include <QAbstractListModel>
+#include <QSqlTableModel>
 
-namespace Core {
-class Application;
-class Settings;
-class ProfileManager;
-}
+namespace Mvc
+{
 
-namespace Ui {
-class MainWindow;
-}
-
-namespace Mvc {
-class NotebooksModel;
-}
-
-class MainWindow : public QMainWindow
+class NotebooksModel : public QAbstractListModel
 {
     Q_OBJECT
-
 public:
-    explicit MainWindow(Core::Application* app, QWidget* parent = nullptr);
-    ~MainWindow();
+    explicit NotebooksModel(QObject* parent = nullptr);
+    ~NotebooksModel();
 
-    void loadProfile(const QString& profile);
-
-private slots:
-    void updateSwitchProfileMenu();
+    int rowCount(const QModelIndex& index) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    QVariant data(const QModelIndex& index, int role) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
 
 private:
-    void requestProfileChange(const QString& profile);
-    void closeProfile();
+    enum Field {
+        Id = 0,
+        Title = 1,
+        Description = 2,
+        Count = 3
+    };
 
-    Ui::MainWindow *ui;
-
-    Core::Application* m_application;
-    Core::Settings* m_settings;
-    Core::ProfileManager* m_profileManager;
-
-    Mvc::NotebooksModel* m_nbModel;
+    QSqlTableModel* m_tableModel;
 };
 
-#endif // MAINWINDOW_H
+}
+
+#endif // NOTEBOOKSMODEL_H
