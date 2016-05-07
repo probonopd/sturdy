@@ -78,6 +78,7 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
     // - Remove button
     connect(ui->btnRemoveNotebook, &QToolButton::pressed, [this]() {
         m_nbModel->removeRow(ui->lstNotebooks->currentIndex().row());
+        m_nbModel->select();
     });
 }
 

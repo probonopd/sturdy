@@ -29,7 +29,6 @@ NotebooksModel::NotebooksModel(QObject* parent)
     : QSqlTableModel(parent)
 {
     setTable(QStringLiteral("notebooks"));
-    setEditStrategy(QSqlTableModel::OnFieldChange);
     select();
 }
 
