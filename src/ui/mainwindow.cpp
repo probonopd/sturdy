@@ -40,6 +40,8 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
 {
     ui->setupUi(this);
 
+    ui->lstEntries->setFocus(ui->lstEntries);
+
     restoreGeometry(m_settings->windowGeometry);
     ui->splitter->restoreState(m_settings->verticalSplitterGeometry);
     ui->selSplitter->restoreState(m_settings->selectionSplitterGeometry);
