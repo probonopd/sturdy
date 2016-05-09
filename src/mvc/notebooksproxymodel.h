@@ -18,25 +18,24 @@
 **
 ***********************************************************************/
 
-#ifndef NOTEBOOKSMODEL_H
-#define NOTEBOOKSMODEL_H
+#ifndef NOTEBOOKSPROXYMODEL_H
+#define NOTEBOOKSPROXYMODEL_H
 
-#include <QAbstractListModel>
-#include <QSqlTableModel>
+#include <QIdentityProxyModel>
 
 namespace Mvc
 {
 
-class NotebooksModel : public QSqlTableModel
+class NotebooksProxyModel : public QIdentityProxyModel
 {
     Q_OBJECT
 public:
-    explicit NotebooksModel(QObject* parent = nullptr);
+    explicit NotebooksProxyModel(QObject* parent = nullptr);
 
-    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
-    QVariant data(const QModelIndex& index, int role) const override;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    int rowCount(const QModelIndex& idx = QModelIndex()) const override;
+    QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const override;
+    Qt::ItemFlags flags(const QModelIndex& idx) const override;
+    bool setData(const QModelIndex& idx, const QVariant& value, int role = Qt::EditRole) override;
 
 private:
     enum Field {
@@ -49,4 +48,4 @@ private:
 
 }
 
-#endif // NOTEBOOKSMODEL_H
+#endif // NOTEBOOKSPROXYMODEL_H

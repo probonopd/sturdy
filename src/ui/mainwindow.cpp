@@ -25,8 +25,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "mvc/notebooksmodel.h"
+#include "mvc/notebooksproxymodel.h"
 
+#include <QSqlTableModel>
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QMessageBox>
@@ -37,6 +38,7 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
     , m_application(app)
     , m_settings(app->settings())
     , m_profileManager(app->profileManager())
+    , m_nbProxyModel(new Mvc::NotebooksProxyModel)
 {
     ui->setupUi(this);
 
@@ -87,6 +89,9 @@ MainWindow::~MainWindow()
     m_settings->verticalSplitterGeometry = ui->splitter->saveState();
     m_settings->selectionSplitterGeometry = ui->selSplitter->saveState();
     m_settings->windowGeometry = saveGeometry();
+
+    if (m_nbModel)
+        delete m_nbModel;
 
     delete ui;
 }
@@ -139,13 +144,18 @@ void MainWindow::loadProfile(const QString& profile)
     }
 
     updateSwitchProfileMenu();
-    m_nbModel = new Mvc::NotebooksModel;
-    ui->lstNotebooks->setModel(m_nbModel);
+
+    m_nbModel = new QSqlTableModel;
+    m_nbModel->setTable(QStringLiteral("notebooks"));
+    m_nbModel->select();
+    m_nbProxyModel.data()->setSourceModel(m_nbModel);
+    ui->lstNotebooks->setModel(m_nbProxyModel.data());
 }
 
 void MainWindow::closeProfile()
 {
     if (m_nbModel)
         delete m_nbModel;
+
     m_profileManager->closeProfile();
 }

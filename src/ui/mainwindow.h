@@ -23,6 +23,8 @@
 
 #include <QMainWindow>
 
+class QSqlTableModel;
+
 namespace Core {
 class Application;
 class Settings;
@@ -34,7 +36,7 @@ class MainWindow;
 }
 
 namespace Mvc {
-class NotebooksModel;
+class NotebooksProxyModel;
 }
 
 class MainWindow : public QMainWindow
@@ -60,7 +62,8 @@ private:
     Core::Settings* m_settings;
     Core::ProfileManager* m_profileManager;
 
-    Mvc::NotebooksModel* m_nbModel;
+    QSqlTableModel* m_nbModel;
+    QScopedPointer<Mvc::NotebooksProxyModel> m_nbProxyModel;
 };
 
 #endif // MAINWINDOW_H
