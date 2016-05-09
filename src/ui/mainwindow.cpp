@@ -146,10 +146,10 @@ void MainWindow::loadProfile(const QString& profile)
     updateSwitchProfileMenu();
 
     m_nbModel = new QSqlTableModel;
-    m_nbModel->setTable(QStringLiteral("notebooks"));
-    m_nbModel->select();
     m_nbProxyModel.data()->setSourceModel(m_nbModel);
     ui->lstNotebooks->setModel(m_nbProxyModel.data());
+    m_nbModel->setTable(QStringLiteral("notebooks"));
+    m_nbModel->select();
 }
 
 void MainWindow::closeProfile()
