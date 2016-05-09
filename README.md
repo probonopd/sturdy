@@ -1,11 +1,13 @@
 # Sturdy
-[![Build Status](https://travis-ci.com/innermous/sturdy.svg?token=hf5dku2pDPnmLecRmMxU&branch=master)](https://travis-ci.com/innermous/sturdy)
+[![Build Status](https://travis-ci.org/innermous/sturdy.svg?branch=master)](https://travis-ci.org/innermous/sturdy)
 
-Sturdy is simple note-taking app with markdown support.
+Sturdy is a simple note-taking app with markdown support.
 
 ## ToDo 
-- [ ] Core functionality (profiles, settings, CRUD)
-- [ ] Custom notebooks and tags
+- [X] Profiles
+- [X] Settings
+- [X] Notebooks
+- [ ] Editor
 - [ ] Search implementation
 - [ ] Markdown support
 - [ ] Dropbox synchronization
