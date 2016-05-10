@@ -75,11 +75,11 @@ Qt::ItemFlags NotebooksProxyModel::flags(const QModelIndex &idx) const
 
 bool NotebooksProxyModel::setData(const QModelIndex &idx, const QVariant &value, int role)
 {
+    if (value.toString().trimmed().isEmpty())
+        return false;
+
     if (idx.row() != rowCount() - 1)
         return QIdentityProxyModel::setData(index(idx.row(), Field::Title), value, role);
-
-    if (value.toString().isEmpty())
-        return false;
 
     // Handle "Add new notebook" scenario
     int newrow = rowCount() - 1;
