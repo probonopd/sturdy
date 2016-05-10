@@ -139,20 +139,6 @@
             </spacer>
            </item>
            <item>
-            <widget class="QToolButton" name="btnAddNotebook">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../../resources/sturdy.qrc">
-               <normaloff>:/icons/icons/add_black_18dp.png</normaloff>:/icons/icons/add_black_18dp.png</iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonIconOnly</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QToolButton" name="btnRemoveNotebook">
              <property name="text">
               <string/>

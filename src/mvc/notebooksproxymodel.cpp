@@ -21,6 +21,7 @@
 #include "notebooksproxymodel.h"
 
 #include <QSqlTableModel>
+#include <QFont>
 
 using namespace Mvc;
 
@@ -32,11 +33,28 @@ NotebooksProxyModel::NotebooksProxyModel(QObject* parent)
 
 int NotebooksProxyModel::rowCount(const QModelIndex &idx) const
 {
-    return QIdentityProxyModel::rowCount(idx);
+    return QIdentityProxyModel::rowCount(idx) + 1;
 }
 
 QVariant NotebooksProxyModel::data(const QModelIndex &idx, int role) const
 {
+    if (idx.row() == rowCount() - 1) {
+        switch (role)
+        {
+        case Qt::DisplayRole:
+            return QStringLiteral("Add new notebook");
+
+        case Qt::FontRole:
+        {
+            QFont font;
+            font.setItalic(true);
+            return font;
+        }
+
+        default: return QIdentityProxyModel::data(idx, role);
+        }
+    }
+
     switch (role)
     {
     case Qt::DisplayRole:
@@ -52,10 +70,35 @@ QVariant NotebooksProxyModel::data(const QModelIndex &idx, int role) const
 
 Qt::ItemFlags NotebooksProxyModel::flags(const QModelIndex &idx) const
 {
-    return QAbstractItemModel::flags(idx) | Qt::ItemIsEditable;
+    return QIdentityProxyModel::flags(idx) | Qt::ItemIsEditable;
 }
 
 bool NotebooksProxyModel::setData(const QModelIndex &idx, const QVariant &value, int role)
 {
-    return QIdentityProxyModel::setData(index(idx.row(), Field::Title), value, role);
+    if (idx.row() != rowCount() - 1)
+        return QIdentityProxyModel::setData(index(idx.row(), Field::Title), value, role);
+
+    if (value.toString().isEmpty())
+        return false;
+
+    // Handle "Add new notebook" scenario
+    int newrow = rowCount() - 1;
+
+    // Check uniqueness
+    QStringList lstTitles;
+    for (int row = 0; row < newrow; ++row)
+        lstTitles << data(QIdentityProxyModel::index(row, Field::Title)).toString();
+    if (lstTitles.contains(value.toString()))
+        return false;
+    else {
+        sourceModel()->insertRow(newrow);
+        return QIdentityProxyModel::setData(QIdentityProxyModel::index(newrow, Field::Title), value);
+    }
+}
+
+QModelIndex NotebooksProxyModel::index(int row, int column, const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+
+    return createIndex(row, column);
 }
