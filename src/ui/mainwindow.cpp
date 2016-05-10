@@ -26,7 +26,9 @@
 #include "ui_mainwindow.h"
 
 #include "mvc/notebooksproxymodel.h"
+#include "mvc/entriesproxymodel.h"
 
+#include <QItemSelectionModel>
 #include <QSqlTableModel>
 #include <QCoreApplication>
 #include <QDesktopServices>
@@ -39,6 +41,8 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
     , m_settings(app->settings())
     , m_profileManager(app->profileManager())
     , m_nbProxyModel(new Mvc::NotebooksProxyModel)
+    , m_entriesProxyModel(new Mvc::EntriesProxyModel)
+    , m_nbSelectionModel(new QItemSelectionModel(m_nbProxyModel.data()))
 {
     ui->setupUi(this);
 
@@ -75,13 +79,33 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
         QMessageBox::aboutQt(this);
     });
 
-    // Notebook buttons
+    // Selection buttons
 
-    // - Remove button
-    connect(ui->btnRemoveNotebook, &QToolButton::pressed, [this]() {
-        m_nbModel->removeRow(ui->lstNotebooks->currentIndex().row());
-        m_nbModel->select();
+    // - Entries remove button
+    connect(ui->btnRemoveEntry, &QToolButton::pressed, [this]() {
+        m_entriesModel->removeRow(ui->lstEntries->currentIndex().row());
+        m_entriesModel->select();
     });
+
+    // - Notebooks remove button
+    connect(ui->btnRemoveNotebook, &QToolButton::pressed, [this]() {
+        m_nbProxyModel->removeRow(ui->lstNotebooks->currentIndex().row());
+        m_nbModel->select();
+        m_entriesModel->select();
+    });
+
+    // Selection widgets
+    ui->lstNotebooks->setModel(m_nbProxyModel.data());
+    ui->lstEntries->setModel(m_entriesProxyModel.data());
+
+    connect(ui->lstNotebooks->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            m_nbProxyModel.data(), &Mvc::NotebooksProxyModel::setCurrentNotebook);
+    connect(m_nbProxyModel.data(), &Mvc::NotebooksProxyModel::notebookChanged,
+            m_entriesProxyModel.data(), &Mvc::EntriesProxyModel::changeNotebook);
+    connect(m_nbProxyModel.data(), &Mvc::NotebooksProxyModel::notebookChanged,
+            this, &MainWindow::changeNotebook);
+
+    ui->lstNotebooks->setFocus();
 }
 
 MainWindow::~MainWindow()
@@ -92,6 +116,8 @@ MainWindow::~MainWindow()
 
     if (m_nbModel)
         delete m_nbModel;
+    if (m_entriesModel)
+        delete m_entriesModel;
 
     delete ui;
 }
@@ -147,15 +173,26 @@ void MainWindow::loadProfile(const QString& profile)
 
     m_nbModel = new QSqlTableModel;
     m_nbProxyModel.data()->setSourceModel(m_nbModel);
-    ui->lstNotebooks->setModel(m_nbProxyModel.data());
     m_nbModel->setTable(QStringLiteral("notebooks"));
     m_nbModel->select();
+
+    m_entriesModel = new QSqlTableModel;
+    m_entriesProxyModel.data()->setSourceModel(m_entriesModel);
+    m_entriesModel->setTable(QStringLiteral("entries"));
+    m_entriesModel->select();
 }
 
 void MainWindow::closeProfile()
 {
     if (m_nbModel)
         delete m_nbModel;
+    if (m_entriesModel)
+        delete m_entriesModel;
 
     m_profileManager->closeProfile();
+}
+
+void MainWindow::changeNotebook(int id)
+{
+    m_entriesModel->setFilter(QStringLiteral("NOTEBOOK_ID = %1").arg(id));
 }

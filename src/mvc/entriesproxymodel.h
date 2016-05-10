@@ -18,43 +18,41 @@
 **
 ***********************************************************************/
 
-#ifndef NOTEBOOKSPROXYMODEL_H
-#define NOTEBOOKSPROXYMODEL_H
+#ifndef ENTRIESPROXYMODEL_H
+#define ENTRIESPROXYMODEL_H
 
 #include <QIdentityProxyModel>
 
 namespace Mvc
 {
 
-class NotebooksProxyModel : public QIdentityProxyModel
+class EntriesProxyModel : public QIdentityProxyModel
 {
     Q_OBJECT
 public:
-    explicit NotebooksProxyModel(QObject* parent = nullptr);
+    explicit EntriesProxyModel(QObject* parent = nullptr);
 
     int rowCount(const QModelIndex& idx = QModelIndex()) const override;
-    QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const override;
     Qt::ItemFlags flags(const QModelIndex& idx) const override;
+    QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex& idx, const QVariant& value, int role = Qt::EditRole) override;
     QModelIndex index(int row, int column, const QModelIndex& parent=QModelIndex()) const override;
 
-    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
-
-    void setCurrentNotebook(const QModelIndex& idx, const QModelIndex& pidx = QModelIndex());
-
-signals:
-    void notebookRemoved();
-    void notebookChanged(int id);
+    void changeNotebook(int id);
 
 private:
     enum Field {
         Id = 0,
         Title,
-        Description,
+        Content,
+        Timestamp,
+        Notebook_id,
         Count
     };
+
+    int m_currentNotebookId;
 };
 
 }
 
-#endif // NOTEBOOKSPROXYMODEL_H
+#endif // ENTRIESPROXYMODEL_H

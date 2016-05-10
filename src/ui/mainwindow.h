@@ -23,6 +23,7 @@
 
 #include <QMainWindow>
 
+class QItemSelectionModel;
 class QSqlTableModel;
 
 namespace Core {
@@ -37,6 +38,7 @@ class MainWindow;
 
 namespace Mvc {
 class NotebooksProxyModel;
+class EntriesProxyModel;
 }
 
 class MainWindow : public QMainWindow
@@ -56,6 +58,8 @@ private:
     void requestProfileChange(const QString& profile);
     void closeProfile();
 
+    void changeNotebook(int id);
+
     Ui::MainWindow *ui;
 
     Core::Application* m_application;
@@ -63,7 +67,10 @@ private:
     Core::ProfileManager* m_profileManager;
 
     QSqlTableModel* m_nbModel;
+    QSqlTableModel* m_entriesModel;
     QScopedPointer<Mvc::NotebooksProxyModel> m_nbProxyModel;
+    QScopedPointer<Mvc::EntriesProxyModel> m_entriesProxyModel;
+    QItemSelectionModel* m_nbSelectionModel;
 };
 
 #endif // MAINWINDOW_H

@@ -60,18 +60,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QToolButton" name="btnAddNote">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../../resources/sturdy.qrc">
-               <normaloff>:/icons/icons/add_black_18dp.png</normaloff>:/icons/icons/add_black_18dp.png</iconset>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="btnRemove">
+            <widget class="QToolButton" name="btnRemoveEntry">
              <property name="text">
               <string/>
              </property>

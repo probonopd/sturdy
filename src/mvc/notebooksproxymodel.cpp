@@ -22,6 +22,7 @@
 
 #include <QSqlTableModel>
 #include <QFont>
+#include <QSqlQuery>
 
 using namespace Mvc;
 
@@ -31,12 +32,12 @@ NotebooksProxyModel::NotebooksProxyModel(QObject* parent)
 
 }
 
-int NotebooksProxyModel::rowCount(const QModelIndex &idx) const
+int NotebooksProxyModel::rowCount(const QModelIndex& idx) const
 {
     return QIdentityProxyModel::rowCount(idx) + 1;
 }
 
-QVariant NotebooksProxyModel::data(const QModelIndex &idx, int role) const
+QVariant NotebooksProxyModel::data(const QModelIndex& idx, int role) const
 {
     if (idx.row() == rowCount() - 1) {
         switch (role)
@@ -51,7 +52,7 @@ QVariant NotebooksProxyModel::data(const QModelIndex &idx, int role) const
             return font;
         }
 
-        default: return QIdentityProxyModel::data(idx, role);
+        default: return QVariant();
         }
     }
 
@@ -68,12 +69,12 @@ QVariant NotebooksProxyModel::data(const QModelIndex &idx, int role) const
     }
 }
 
-Qt::ItemFlags NotebooksProxyModel::flags(const QModelIndex &idx) const
+Qt::ItemFlags NotebooksProxyModel::flags(const QModelIndex& idx) const
 {
     return QIdentityProxyModel::flags(idx) | Qt::ItemIsEditable;
 }
 
-bool NotebooksProxyModel::setData(const QModelIndex &idx, const QVariant &value, int role)
+bool NotebooksProxyModel::setData(const QModelIndex& idx, const QVariant& value, int role)
 {
     if (value.toString().trimmed().isEmpty())
         return false;
@@ -96,9 +97,37 @@ bool NotebooksProxyModel::setData(const QModelIndex &idx, const QVariant &value,
     }
 }
 
-QModelIndex NotebooksProxyModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex NotebooksProxyModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
 
     return createIndex(row, column);
+}
+
+bool NotebooksProxyModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    for (int i = row; i < row + count; ++i) {
+        int id = QIdentityProxyModel::data(index(row, Field::Id)).toInt();
+
+        // Cascade removing depending entries
+        QSqlDatabase db = QSqlDatabase::database();
+        QSqlQuery query(db);
+        query.prepare(QStringLiteral("DELETE FROM ENTRIES WHERE notebook_id = ?"));
+        query.addBindValue(id);
+        query.exec();
+    }
+
+    return QIdentityProxyModel::removeRows(row, count, parent);
+}
+
+void NotebooksProxyModel::setCurrentNotebook(const QModelIndex& idx, const QModelIndex& pidx)
+{
+    Q_UNUSED (pidx)
+
+    // Don't do anything for virtual row
+    if (idx.row() == QIdentityProxyModel::rowCount())
+        return;
+
+    int id = QIdentityProxyModel::data(index(idx.row(), Field::Id)).toInt();
+    emit notebookChanged(id);
 }
