@@ -104,8 +104,6 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
             m_entriesProxyModel.data(), &Mvc::EntriesProxyModel::changeNotebook);
     connect(m_nbProxyModel.data(), &Mvc::NotebooksProxyModel::notebookChanged,
             this, &MainWindow::changeNotebook);
-
-    ui->lstNotebooks->setFocus();
 }
 
 MainWindow::~MainWindow()

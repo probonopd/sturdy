@@ -22,6 +22,7 @@
 
 #include <QSqlTableModel>
 #include <QFont>
+#include <QIcon>
 #include <QSqlQuery>
 
 using namespace Mvc;
@@ -51,6 +52,9 @@ QVariant NotebooksProxyModel::data(const QModelIndex& idx, int role) const
             font.setItalic(true);
             return font;
         }
+
+        case Qt::DecorationRole:
+            return QIcon(QStringLiteral(":/icons/icons/add_black_18dp.png"));
 
         default: return QVariant();
         }

@@ -38,7 +38,7 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>11</pointsize>
+               <pointsize>13</pointsize>
               </font>
              </property>
              <property name="text">
@@ -88,8 +88,26 @@
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
-             <verstretch>1</verstretch>
+             <verstretch>2</verstretch>
             </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QListView::item {
+	height: 40px;
+}
+
+QListView::item:!selected {
+	border-bottom: 1px solid gray;
+}
+
+QListView:item:selected:!active {
+	background: gray;
+}</string>
            </property>
           </widget>
          </item>
@@ -106,7 +124,7 @@
             <widget class="QLabel" name="lblNotebooks">
              <property name="font">
               <font>
-               <pointsize>11</pointsize>
+               <pointsize>13</pointsize>
               </font>
              </property>
              <property name="text">
@@ -141,7 +159,27 @@
           </layout>
          </item>
          <item>
-          <widget class="QListView" name="lstNotebooks"/>
+          <widget class="QListView" name="lstNotebooks">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QListView::item {
+	height: 40px;
+}
+
+QListView::item:!selected {
+	border-bottom: 1px solid gray;
+	padding: 2px;
+}
+
+QListView:item:selected:!active {
+	background: gray;
+}</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
