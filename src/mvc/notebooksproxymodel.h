@@ -37,13 +37,11 @@ public:
     Qt::ItemFlags flags(const QModelIndex& idx) const override;
     bool setData(const QModelIndex& idx, const QVariant& value, int role = Qt::EditRole) override;
     QModelIndex index(int row, int column, const QModelIndex& parent=QModelIndex()) const override;
-
     bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
     void setCurrentNotebook(const QModelIndex& idx, const QModelIndex& pidx = QModelIndex());
 
 signals:
-    void notebookRemoved();
     void notebookChanged(int id);
 
 private:

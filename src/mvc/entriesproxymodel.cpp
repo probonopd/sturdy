@@ -114,7 +114,29 @@ QModelIndex EntriesProxyModel::index(int row, int column, const QModelIndex& par
     return createIndex(row, column);
 }
 
+bool EntriesProxyModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    for (int i = row; i < row + count; ++i) {
+        int id = QIdentityProxyModel::data(index(row, Field::Id)).toInt();
+        emit entryRemoved(id);
+    }
+
+    return QIdentityProxyModel::removeRows(row, count, parent);
+}
+
 void EntriesProxyModel::changeNotebook(int id)
 {
     m_currentNotebookId = id;
+}
+
+void EntriesProxyModel::setCurrentEntry(const QModelIndex& idx, const QModelIndex& pidx)
+{
+    Q_UNUSED (pidx)
+
+    // Don't do anything to virtual row
+    if (idx.row() == QIdentityProxyModel::rowCount())
+        return;
+
+    int id = QIdentityProxyModel::data(index(idx.row(), Field::Id)).toInt();
+    emit entrySelected(id);
 }

@@ -45,6 +45,7 @@ public:
 
     Entry* getEntry(int entryId) const;
 
+    void close(int entryId);
     void clear();
 
     bool save(int entryId) const;

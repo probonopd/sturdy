@@ -43,6 +43,7 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
     , m_nbProxyModel(new Mvc::NotebooksProxyModel)
     , m_entriesProxyModel(new Mvc::EntriesProxyModel)
     , m_nbSelectionModel(new QItemSelectionModel(m_nbProxyModel.data()))
+    , m_entriesSelectionModel(new QItemSelectionModel(m_entriesProxyModel.data()))
 {
     ui->setupUi(this);
 
@@ -83,7 +84,7 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
 
     // - Entries remove button
     connect(ui->btnRemoveEntry, &QToolButton::pressed, [this]() {
-        m_entriesModel->removeRow(ui->lstEntries->currentIndex().row());
+        m_entriesProxyModel->removeRow(ui->lstEntries->currentIndex().row());
         m_entriesModel->select();
     });
 
@@ -104,6 +105,8 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
 
     connect(ui->lstNotebooks->selectionModel(), &QItemSelectionModel::currentRowChanged,
             m_nbProxyModel.data(), &Mvc::NotebooksProxyModel::setCurrentNotebook);
+    connect(ui->lstEntries->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            m_entriesProxyModel.data(), &Mvc::EntriesProxyModel::setCurrentEntry);
     connect(m_nbProxyModel.data(), &Mvc::NotebooksProxyModel::notebookChanged,
             m_entriesProxyModel.data(), &Mvc::EntriesProxyModel::changeNotebook);
     connect(m_nbProxyModel.data(), &Mvc::NotebooksProxyModel::notebookChanged,

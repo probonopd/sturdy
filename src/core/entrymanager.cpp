@@ -32,11 +32,20 @@ EntryManager::~EntryManager()
     clear();
 }
 
+void EntryManager::close(int entryId)
+{
+    Entry* entry = getEntry(entryId);
+    if (!entry)
+        return;
+
+    delete entry;
+    m_entries.erase(entryId);
+}
+
 void EntryManager::clear()
 {
-    for (auto entryId : m_entries) {
-        save(entryId.first);
-        delete entryId.second;
+    for (auto entry : m_entries) {
+        close(entry.first);
     }
 
     m_entries.clear();
@@ -46,7 +55,7 @@ bool EntryManager::save(int entryId) const
 {
     Entry* entry = m_entries.at(entryId);
     if (!entry->isStateChanged)
-        return false;
+        return true;
 
     QSqlDatabase db = QSqlDatabase::database();
     if (db.isOpen())
@@ -88,7 +97,8 @@ Entry* EntryManager::getEntry(int entryId) const
 {
     auto it = m_entries.find(entryId);
     if (it == m_entries.end())
-        load(entryId);
+        if (!load(entryId))
+            return nullptr;
 
     return m_entries.at(entryId);
 }

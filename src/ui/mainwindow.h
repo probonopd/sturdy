@@ -71,6 +71,7 @@ private:
     QScopedPointer<Mvc::NotebooksProxyModel> m_nbProxyModel;
     QScopedPointer<Mvc::EntriesProxyModel> m_entriesProxyModel;
     QItemSelectionModel* m_nbSelectionModel;
+    QItemSelectionModel* m_entriesSelectionModel;
 };
 
 #endif // MAINWINDOW_H

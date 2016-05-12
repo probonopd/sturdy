@@ -37,8 +37,14 @@ public:
     QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex& idx, const QVariant& value, int role = Qt::EditRole) override;
     QModelIndex index(int row, int column, const QModelIndex& parent=QModelIndex()) const override;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 
     void changeNotebook(int id);
+    void setCurrentEntry(const QModelIndex& idx, const QModelIndex& pidx = QModelIndex());
+
+signals:
+    void entrySelected(int id);
+    void entryRemoved(int id);
 
 private:
     enum Field {
