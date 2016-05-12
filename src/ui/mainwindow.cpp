@@ -89,9 +89,13 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
 
     // - Notebooks remove button
     connect(ui->btnRemoveNotebook, &QToolButton::pressed, [this]() {
+        int currentRow = ui->lstNotebooks->currentIndex().row();
         m_nbProxyModel->removeRow(ui->lstNotebooks->currentIndex().row());
         m_nbModel->select();
         m_entriesModel->select();
+
+        // Select next notebook
+        ui->lstNotebooks->setCurrentIndex(m_nbModel->index(currentRow, 0));
     });
 
     // Selection widgets

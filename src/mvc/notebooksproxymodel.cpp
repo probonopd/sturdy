@@ -119,6 +119,8 @@ bool NotebooksProxyModel::removeRows(int row, int count, const QModelIndex &pare
         query.prepare(QStringLiteral("DELETE FROM ENTRIES WHERE notebook_id = ?"));
         query.addBindValue(id);
         query.exec();
+
+        emit notebookChanged(-1);
     }
 
     return QIdentityProxyModel::removeRows(row, count, parent);

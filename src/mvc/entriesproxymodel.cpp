@@ -27,12 +27,14 @@ using namespace Mvc;
 
 EntriesProxyModel::EntriesProxyModel(QObject* parent)
     : QIdentityProxyModel(parent)
-    , m_currentNotebookId(0)
+    , m_currentNotebookId(-1)
 {
 }
 
 int EntriesProxyModel::rowCount(const QModelIndex& idx) const
 {
+    if (m_currentNotebookId < 0)
+        return 0;
     return QIdentityProxyModel::rowCount(idx) + 1;
 }
 
