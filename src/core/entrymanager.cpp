@@ -45,7 +45,7 @@ void EntryManager::close(int entryId)
 void EntryManager::clear()
 {
     for (auto entry : m_entries) {
-        close(entry.first);
+        delete entry.second;
     }
 
     m_entries.clear();
@@ -54,7 +54,7 @@ void EntryManager::clear()
 bool EntryManager::save(int entryId) const
 {
     Entry* entry = m_entries.at(entryId);
-    if (!entry->isStateChanged)
+    if (!entry->isModified)
         return true;
 
     QSqlDatabase db = QSqlDatabase::database();
@@ -62,6 +62,7 @@ bool EntryManager::save(int entryId) const
         return false;
 
     entry->timestamp = QDateTime().toTime_t();
+    entry->isModified = false;
 
     QSqlQuery query(db);
     query.prepare(QStringLiteral("UPDATE entries SET content = ?, timestamp = ? WHERE id= ?"));
@@ -71,11 +72,9 @@ bool EntryManager::save(int entryId) const
     return query.exec();
 }
 
-bool EntryManager::load(int entryId) const
+bool EntryManager::load(int entryId)
 {
     QSqlDatabase db = QSqlDatabase::database();
-    if (db.isOpen())
-        return false;
 
     QSqlQuery query(db);
     query.prepare(QStringLiteral("SELECT id, content, timestamp FROM entries WHERE id= ?"));
@@ -90,10 +89,12 @@ bool EntryManager::load(int entryId) const
     entry->content = query.value(1).toString();
     entry->timestamp = query.value(2).toUInt();
 
+    m_entries.insert(std::make_pair<>(entry->id, entry));
+
     return true;
 }
 
-Entry* EntryManager::getEntry(int entryId) const
+Entry* EntryManager::getEntry(int entryId)
 {
     auto it = m_entries.find(entryId);
     if (it == m_entries.end())

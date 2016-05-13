@@ -34,7 +34,7 @@ struct Entry
     QString content;
     uint timestamp;
 
-    bool isStateChanged { false };
+    bool isModified { false };
 };
 
 class EntryManager
@@ -43,15 +43,16 @@ public:
     EntryManager() = default;
     ~EntryManager();
 
-    Entry* getEntry(int entryId) const;
+    Entry* getEntry(int entryId);
 
     void close(int entryId);
-    void clear();
 
     bool save(int entryId) const;
-    bool load(int entryId) const;
+    bool load(int entryId);
 
 private:
+    void clear();
+
     std::unordered_map<int, Entry*> m_entries;
 };
 
