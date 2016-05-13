@@ -33,6 +33,7 @@
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QWebChannel>
 
 MainWindow::MainWindow(Core::Application* app, QWidget* parent)
     : QMainWindow(parent)
@@ -111,6 +112,21 @@ MainWindow::MainWindow(Core::Application* app, QWidget* parent)
             m_entriesProxyModel.data(), &Mvc::EntriesProxyModel::changeNotebook);
     connect(m_nbProxyModel.data(), &Mvc::NotebooksProxyModel::notebookChanged,
             this, &MainWindow::changeNotebook);
+
+    // Editor
+    connect(m_entriesProxyModel.data(), &Mvc::EntriesProxyModel::entrySelected,
+            ui->editor, &EditorWidget::setCurrentEntry);
+    connect(m_entriesProxyModel.data(), &Mvc::EntriesProxyModel::entryRemoved,
+            ui->editor, &EditorWidget::closeEntry);
+    connect(ui->editor, &QPlainTextEdit::textChanged, [this]() {
+        m_previewContent.setText(ui->editor->toPlainText());
+    });
+
+    PreviewPage* m_previewPage = new PreviewPage(this);
+    ui->preview->setPage(m_previewPage);
+    QWebChannel *channel = new QWebChannel(this);
+    channel->registerObject(QStringLiteral("content"), &m_previewContent);
+    m_previewPage->setWebChannel(channel);
 }
 
 MainWindow::~MainWindow()

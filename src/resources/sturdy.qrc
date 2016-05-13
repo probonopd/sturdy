@@ -8,4 +8,10 @@
         <file>icons/edit_black_18dp.png</file>
         <file>icons/add_black_18dp.png</file>
     </qresource>
+    <qresource prefix="/editor">
+        <file>editor/qwebchannel.js</file>
+        <file>editor/marked.min.js</file>
+        <file>editor/markdown.css</file>
+        <file>editor/index.html</file>
+    </qresource>
 </RCC>

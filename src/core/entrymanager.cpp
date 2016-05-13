@@ -24,6 +24,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QVariant>
+#include <QDebug>
 
 using namespace Core;
 
@@ -45,6 +46,7 @@ void EntryManager::close(int entryId)
 void EntryManager::clear()
 {
     for (auto entry : m_entries) {
+        save(entry.first);
         delete entry.second;
     }
 
@@ -57,12 +59,10 @@ bool EntryManager::save(int entryId) const
     if (!entry->isModified)
         return true;
 
-    QSqlDatabase db = QSqlDatabase::database();
-    if (db.isOpen())
-        return false;
-
     entry->timestamp = QDateTime().toTime_t();
     entry->isModified = false;
+
+    QSqlDatabase db = QSqlDatabase::database();
 
     QSqlQuery query(db);
     query.prepare(QStringLiteral("UPDATE entries SET content = ?, timestamp = ? WHERE id= ?"));

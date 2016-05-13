@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += gui widgets sql
+QT += gui widgets sql webenginewidgets webchannel
 CONFIG += c++11 silent
 
 VERSION = 0.0.1

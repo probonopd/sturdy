@@ -21,6 +21,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "ui/previewpage.h"
+
 #include <QMainWindow>
 
 class QItemSelectionModel;
@@ -72,6 +74,8 @@ private:
     QScopedPointer<Mvc::EntriesProxyModel> m_entriesProxyModel;
     QItemSelectionModel* m_nbSelectionModel;
     QItemSelectionModel* m_entriesSelectionModel;
+
+    Document m_previewContent;
 };
 
 #endif // MAINWINDOW_H
