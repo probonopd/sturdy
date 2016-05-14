@@ -43,6 +43,7 @@ public:
 
 signals:
     void notebookChanged(int id);
+    void entryRemoved(int id);
 
 private:
     enum Field {

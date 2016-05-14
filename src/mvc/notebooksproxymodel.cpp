@@ -116,6 +116,13 @@ bool NotebooksProxyModel::removeRows(int row, int count, const QModelIndex &pare
         // Cascade removing depending entries
         QSqlDatabase db = QSqlDatabase::database();
         QSqlQuery query(db);
+        query.prepare(QStringLiteral("SELECT id FROM ENTRIES WHERE notebook_id = ?"));
+        query.addBindValue(id);
+        query.exec();
+
+        while (query.next())
+            emit entryRemoved(query.value(0).toInt());
+
         query.prepare(QStringLiteral("DELETE FROM ENTRIES WHERE notebook_id = ?"));
         query.addBindValue(id);
         query.exec();
