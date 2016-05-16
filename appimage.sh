@@ -100,7 +100,7 @@ cat $LOWERAPP.desktop
 ########################################################################
 
 GLIBC_NEEDED=$(glibc_needed)
-VERSION=git$GIT_REV-glibc$GLIBC_NEEDED
+VERSION=git.$GIT_REV-glibc$GLIBC_NEEDED
 
 ########################################################################
 # Patch away absolute paths; it would be nice if they were relative
