@@ -20,7 +20,8 @@ sudo chown -R $USER /app/
 # Patch hardcoded /app away
 find /app/ -type f -exec sed -i -e "s|/app|././|g" {} \;
 
-mkdir -p /$APP/$APP.AppDir/
+sudo mkdir -p /$APP/$APP.AppDir/
+sudo chown -R $USER /$APP/
 mv /app /$APP/$APP.AppDir/usr
 
 cd /$APP/
