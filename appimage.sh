@@ -45,6 +45,7 @@ Exec=$LOWERAPP
 Comment=Note-taking app with markdown support
 Icon=$LOWERAPP
 EOF
+cat $LOWERAPP.desktop
 
 # FIXME: Workaround for missing icon file
 wget -c "https://cloud.githubusercontent.com/assets/2480569/11008987/42eef908-84d4-11e5-9da8-05e96ec97af0.png" -O $LOWERAPP.png
@@ -87,6 +88,7 @@ strip usr/bin/* usr/lib/* || true
 ########################################################################
 
 get_desktopintegration $LOWERAPP
+cat $LOWERAPP.desktop
 
 ########################################################################
 # Determine the version of the app; also include needed glibc version
