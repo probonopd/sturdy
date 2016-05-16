@@ -8,7 +8,7 @@ before_install:
  - sudo apt-get update -qq
 
 install:
- - sudo apt-get install -qq qt56base qt56tools qt56webengine
+ - sudo apt-get install -q qt56base qt56tools qt56webengine
 
 script:
  - /opt/qt56/bin/qmake PREFIX=/app/
