@@ -5,10 +5,10 @@ cache: apt
 
 before_install:
  - sudo apt-add-repository -y ppa:beineri/opt-qt56-trusty
- - sudo apt-get update -qq
+ - sudo apt-get update
 
 install:
- - sudo apt-get install -q qt56base qt56tools qt56webengine
+ - sudo apt-get install -y qt56base qt56tools qt56webengine
 
 script:
  - /opt/qt56/bin/qmake PREFIX=/app/
