@@ -63,7 +63,7 @@ cp -r $PLUGINS/* ./usr/lib/qt5/plugins/
 find /opt -name QtWebEngineProcess -exec cp {} ./usr/bin \;
 cp -r /opt/qt56/translations ./usr/bin/
 cp -r /opt/qt56/resources ./usr/bin/
-cp -r cp /usr/lib/x86_64-linux-gnu/nss/* ./usr/lib
+cp -r /usr/lib/x86_64-linux-gnu/nss/* ./usr/lib
 
 export LD_LIBRARY_PATH=/opt/qt56/lib/:LD_LIBRARY_PATH
 copy_deps
