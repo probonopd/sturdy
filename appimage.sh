@@ -14,10 +14,12 @@ LOWERAPP=${APP,,}
 GIT_REV=$(git rev-parse --short HEAD)
 echo $GIT_REV
 
-sudo make install DESTDIR=/$APP/$APP.AppDir/
-find /$APP/
+# sudo make install DESTDIR=/$APP/$APP.AppDir/
+sudo chown -R $USER /app/
+find /app/
 
-sudo chown -R $USER /$APP/
+mkdir -p /$APP/$APP.AppDir/
+mv /app/* /$APP/$APP.AppDir/
 
 cd /$APP/
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
