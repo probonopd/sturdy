@@ -106,6 +106,7 @@ VERSION=git.$GIT_REV-glibc$GLIBC_NEEDED
 # Patch away absolute paths; it would be nice if they were relative
 ########################################################################
 
+find usr/lib -type f -exec sed -i -e 's|/opt/qt56|././/////|g' {} \;
 # Possibly need to patch additional hardcoded paths away, replace
 # "/usr" with "././" which means "usr/ in the AppDir"
 
