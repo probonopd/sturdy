@@ -61,7 +61,8 @@ PLUGINS=/opt/qt56/plugins/
 cp -r $PLUGINS/* ./usr/lib/qt5/plugins/
 
 find /opt -name QtWebEngineProcess -exec cp {} ./usr/bin \;
-cp -r /opt/qt56/translations/qtwebengine_locales ./usr/bin/
+cp -r /opt/qt56/translations ./usr/bin/
+cp -r /opt/qt56/resources ./usr/bin/
 
 export LD_LIBRARY_PATH=/opt/qt56/lib/:LD_LIBRARY_PATH
 copy_deps
