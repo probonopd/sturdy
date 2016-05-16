@@ -8,24 +8,40 @@
 
 sudo apt-get -y install coreutils binutils
 export ARCH=$(arch)
+
 APP=Sturdy
 LOWERAPP=${APP,,}
 GIT_REV=$(git rev-parse --short HEAD)
 echo $GIT_REV
 
+sudo make install DESTDIR=/$APP/$APP.AppDir
+
+sudo chown -R $USER /$APP/
+
+cd /$APP/
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-sudo chown -R $USER /app
-cd /app
+cd $APP.AppDir/
 
 ########################################################################
 # Copy desktop and icon file to AppDir for AppRun to pick them up
 ########################################################################
 
 get_apprun
-find . -name *desktop -exec cp {} $LOWERAPP.desktop \;
-touch $LOWERAPP.png # FIXME
+
+# find . -name *desktop -exec cp {} $LOWERAPP.desktop \;
+# FIXME: Workaround for missing desktop file
+echo > $LOWERAPP.desktop <<EOF
+[Desktop Entry]
+Name=$APP
+Exec=$LOWERAPP
+Comment=Note-taking app with markdown support
+Icon=$LOWERAPP
+EOF
+
+# FIXME: Workaround for missing icon file
+touch $LOWERAPP.png
 
 ########################################################################
 # Copy in the dependencies that cannot be assumed to be available
