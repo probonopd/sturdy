@@ -21,8 +21,8 @@ sudo chown -R $USER /app/
 find /app/ -type f -exec sed -i -e "s|/app|././|g" {} \;
 
 sudo mkdir -p /$APP/$APP.AppDir/
+sudo mv /app /$APP/$APP.AppDir/usr
 sudo chown -R $USER /$APP/
-mv /app /$APP/$APP.AppDir/usr
 
 cd /$APP/
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
