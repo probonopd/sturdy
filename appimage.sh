@@ -19,7 +19,10 @@ sudo chown -R $USER /app/
 find /app/
 
 mkdir -p /$APP/$APP.AppDir/
-mv /app/* /$APP/$APP.AppDir/
+mv /app /$APP/$APP.AppDir/usr
+
+# Patch hardcoded /usr away
+find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
 cd /$APP/
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
