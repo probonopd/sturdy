@@ -14,7 +14,8 @@ LOWERAPP=${APP,,}
 GIT_REV=$(git rev-parse --short HEAD)
 echo $GIT_REV
 
-# sudo make install DESTDIR=/$APP/$APP.AppDir/
+sudo make install
+
 sudo chown -R $USER /app/
 # Patch hardcoded /app away
 find usr/ -type f -exec sed -i -e "s|/app|././|g" {} \;
