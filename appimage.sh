@@ -12,12 +12,12 @@ APP=Sturdy
 LOWERAPP=${APP,,}
 GIT_REV=$(git rev-parse --short HEAD)
 echo $GIT_REV
-sudo make install DESTDIR=/$APP/$APP.AppDir
-sudo chown -R $USER /$APP
-cd /$APP/
+
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
-cd $APP.AppDir
+
+sudo chown -R $USER /app
+cd /app
 
 ########################################################################
 # Copy desktop and icon file to AppDir for AppRun to pick them up
