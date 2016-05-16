@@ -38,7 +38,7 @@ get_apprun
 
 # find . -name *desktop -exec cp {} $LOWERAPP.desktop \;
 # FIXME: Workaround for missing desktop file
-echo > $LOWERAPP.desktop <<EOF
+cat > $LOWERAPP.desktop <<EOF
 [Desktop Entry]
 Name=$APP
 Exec=$LOWERAPP
