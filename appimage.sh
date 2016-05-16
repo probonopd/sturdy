@@ -47,7 +47,7 @@ Icon=$LOWERAPP
 EOF
 
 # FIXME: Workaround for missing icon file
-touch $LOWERAPP.png
+wget -c "https://cloud.githubusercontent.com/assets/2480569/11008987/42eef908-84d4-11e5-9da8-05e96ec97af0.png" -O $LOWERAPP.png
 
 ########################################################################
 # Copy in the dependencies that cannot be assumed to be available
