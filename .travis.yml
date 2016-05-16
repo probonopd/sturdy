@@ -4,7 +4,7 @@ language: cpp
 cache: apt
 
 before_install:
- - sudo sed -i -e 's|http://us.archive.ubuntu.com/ubuntu/|http://us-east-1.clouds.archive.ubuntu.com/ubuntu/|g' /etc/apt/sources.list
+ - sudo sed -i -e 's|http://us.archive.ubuntu.com/ubuntu/|http://eu-central-1.clouds.archive.ubuntu.com/ubuntu/|g' /etc/apt/sources.list
  - sudo apt-add-repository -y ppa:beineri/opt-qt56-trusty
  - sudo apt-get update
 
