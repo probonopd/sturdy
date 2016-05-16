@@ -14,3 +14,4 @@ script:
  - /opt/qt56/bin/qmake PREFIX=/app/
  - sudo make install
  - find /app
+ - ./appimage.sh
