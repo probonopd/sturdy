@@ -63,6 +63,8 @@ mkdir -p ./usr/lib/qt5/plugins/
 PLUGINS=/opt/qt56/plugins/
 cp -r $PLUGINS/* ./usr/lib/qt5/plugins/
 
+find /opt -name QtWebEngineProcess -exec cp {} ./usr/bin \;
+
 export LD_LIBRARY_PATH=/opt/qt56/lib/:LD_LIBRARY_PATH
 copy_deps
 
