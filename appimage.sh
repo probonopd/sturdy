@@ -6,9 +6,6 @@
 # For more information, see http://appimage.org/
 ########################################################################
 
-find /opt | grep QtWebEngineProcess
-grep -r QtWebEngineProcess /app
-
 sudo apt-get -y install coreutils binutils
 export ARCH=$(arch)
 
