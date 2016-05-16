@@ -16,13 +16,11 @@ echo $GIT_REV
 
 # sudo make install DESTDIR=/$APP/$APP.AppDir/
 sudo chown -R $USER /app/
-find /app/
+# Patch hardcoded /app away
+find usr/ -type f -exec sed -i -e "s|/app|././|g" {} \;
 
 mkdir -p /$APP/$APP.AppDir/
 mv /app /$APP/$APP.AppDir/usr
-
-# Patch hardcoded /usr away
-find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
 cd /$APP/
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
