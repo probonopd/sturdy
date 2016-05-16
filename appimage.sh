@@ -14,7 +14,8 @@ LOWERAPP=${APP,,}
 GIT_REV=$(git rev-parse --short HEAD)
 echo $GIT_REV
 
-sudo make install DESTDIR=/$APP/$APP.AppDir
+sudo make install DESTDIR=/$APP/$APP.AppDir/
+find /$APP/
 
 sudo chown -R $USER /$APP/
 
