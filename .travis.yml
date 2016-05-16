@@ -11,7 +11,5 @@ install:
  - sudo apt-get install -qq qt56base qt56tools qt56webengine
 
 script:
- - /opt/qt56/bin/qmake PREFIX=/app/
- - sudo make install
- - find /app
+ - /opt/qt56/bin/qmake PREFIX=/usr/
  - bash -ex appimage.sh
