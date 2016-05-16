@@ -18,7 +18,7 @@ sudo make install
 
 sudo chown -R $USER /app/
 # Patch hardcoded /app away
-find usr/ -type f -exec sed -i -e "s|/app|././|g" {} \;
+find /app/ -type f -exec sed -i -e "s|/app|././|g" {} \;
 
 mkdir -p /$APP/$APP.AppDir/
 mv /app /$APP/$APP.AppDir/usr
