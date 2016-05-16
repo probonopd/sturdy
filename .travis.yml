@@ -12,6 +12,5 @@ install:
 
 script:
  - /opt/qt56/bin/qmake PREFIX=/app/
- - make
  - sudo make install
  - find /app
