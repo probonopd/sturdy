@@ -56,13 +56,15 @@ wget -c "https://cloud.githubusercontent.com/assets/2480569/11008987/42eef908-84
 # on all target systems
 ########################################################################
 
-# FIXME: How to find out which subset of plugins is really needed?
 mkdir -p ./usr/lib/qt5/plugins/
 PLUGINS=/opt/qt56/plugins/
 cp -r $PLUGINS/* ./usr/lib/qt5/plugins/
+# This stuff seems not to be required by this particular Qt app - how can we be sure? (FIXME)
+rm -rf usr/lib/qt5/plugins/{bearer,designer,generic,geoservices,position,prontsupport,qmltooling}
 
 find /opt -name QtWebEngineProcess -exec cp {} ./usr/bin \;
-cp -r /opt/qt56/translations ./usr/bin/
+mkdir -p ./usr/bin/translations/qtwebengine_locales/
+cp -r /opt/qt56/translations/qtwebengine_locales/en-US.pak ./usr/bin/translations/qtwebengine_locales/
 cp -r /opt/qt56/resources ./usr/bin/
 cp -r /usr/lib/x86_64-linux-gnu/nss/* ./usr/lib
 
