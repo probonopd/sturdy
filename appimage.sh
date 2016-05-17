@@ -40,6 +40,7 @@ get_apprun
 # FIXME: Workaround for missing desktop file
 cat > $LOWERAPP.desktop <<EOF
 [Desktop Entry]
+Type=Application
 Name=$APP
 Exec=$LOWERAPP
 Comment=Note-taking app with markdown support
